@@ -1,13 +1,14 @@
-#Script para realizar automaticamente el analisis de los datos generados por el CALLISTO.
+# NOTA: Los comentarios no tienen acentos, para evitar problemas de compilacion.
+
+# Script para realizar automaticamente el analisis de los datos generados por el CALLISTO.
     
-#Se recomienda usar un programador de tareas para ejecutar el codigo de manera periodica.
-   
-# Los comentarios no tienen acentos, para evitar problemas de compilacion.
+# Se recomienda usar un programador de tareas para ejecutar el codigo de manera periodica.
 
-# Autor: Oscar B. Godines-Torres --------- 09/02/2022.
+# El archivo LOG_CALLISTO_A.txt se utiliza para llevar un registro de las ejecuciones periodicas del script, este puede modificarse u omitirse. 
 
-# Nota: Cualquier modificacion favor de agregarla a la 'LISTA DE MODIFICACIONES' que se encuentra al final del código, no olvidar poner la fecha de la misma.
-# Además, agregar la modificación al archivo 'Bitacora_CALLISTO_A.txt', para así mantener un orden.
+# En nuestro caso, el receptor se reinicia a las 09:00 UTC, el caso 2 toma en cuenta eso, se debe modificar esta parte para la hora de reinicio de su receptor. 
+
+# Autor: Oscar B. Godines-Torres --------- 09/02/2022. Contacto: oscargodinesosocar@gmail.com
 
 
 import filecmp
@@ -33,16 +34,17 @@ import shutil
 
 now = datetime.now()                                                   # Se obtiene la fecha y hora actual.
 
-text = open('C:/Users/eagui/OneDrive/Escritorio/LOG_CALLISTO_A.txt','a')
-text.write('\n\n\n Ejecutando ahora ---------> ' + str(now) + '\n')
+text = open('C:/Users/eagui/OneDrive/Escritorio/LOG_CALLISTO_A.txt','a') # Aqui se debe de colocar la dirección donde quieras tu archivo, además de darle un nombre. Si no existe el script lo crea. 
+text.write('\n\n\n Ejecutando ahora ---------> ' + str(now) + '\n') # A partir de aqui el archivo formato txt va registrando todas las acciones del script.
 text.write('Buscando archivos nuevos... \n\n')
 
 print('Ejecutando ahora ---------> ' + str(now)) 
                                                                        # Se imprime la fecha y hora de ejecucion. 
 print('Buscando archivos nuevos... \n')
 
-dir1 = 'C:/CALLISTO-01/FITfiles'
-dir2 = 'D:/Graficas_CALLISTO-A/FitFilesBackupA'                        # Directorios a comparar. 
+dir1 = 'C:/CALLISTO-01/FITfiles'                  # Directorios a comparar. 
+dir2 = 'D:/Graficas_CALLISTO-A/FitFilesBackupA'   # En la variable dir1 se debe de colocar la carpeta donde el receptor coloca los archivos generados. 
+                                                  # En la variable dir2 se coloca la dirección de una carpeta destinada a ser una referencia para encontrar nuevos archivos.
 
 comp = filecmp.dircmp(dir1,dir2,ignore=None,hide=None)   
 
@@ -59,8 +61,8 @@ for i in range(len(new)):                                              #Se inici
     news = str(new[i])                                                 #Convierte la variable lista a string.
 
     
-    if news[24:28] == '0859':                                          #Caso 2: Es la hora de reinicio, el archivo se descarta. 
-        print(new[i])
+    if news[24:28] == '0859':                                          #Caso 2: Es la hora de reinicio, el archivo se descarta. Hace referencia a las 08:59 UTC. 
+        print(new[i])                                                  #Esta seccion debe modificarse para cada recpetor, o en defecto usar la misma hora de reinicio. 
         files = 'C:/CALLISTO-01/FITfiles/' + news
         print(news[24:26] + ':' + news[26:28] + 
             ' UTC - Hora de reinicio, con menos de un segundo de registro. \n')
@@ -161,8 +163,7 @@ for i in range(len(new)):                                              #Se inici
 
         namefile = news[0:33]                                          #Se extrae el nombre del archivo sin extension '.fit'
 
-        fig.savefig('D:/Graficas_CALLISTO-A/EspectrosDinamicos_A/' + namefile)
-        #Se guarda la figura en formato PNG.
+        fig.savefig('D:/Graficas_CALLISTO-A/EspectrosDinamicos_A/' + namefile)       #Se guarda la figura en formato PNG.
         
         plt.close()                                                    #Cerrar figura. 
 
@@ -207,7 +208,7 @@ for i in range(len(new)):                                              #Se inici
         
         namefile = news[0:33] 
 
-        fig.savefig('D:/Graficas_CALLISTO-A/CurvasDeLuz_A/' + namefile)
+        fig.savefig('D:/Graficas_CALLISTO-A/CurvasDeLuz_A/' + namefile)     #Se guarda la figura en formato PNG.
 
         plt.close('all')                                              #Se cierran todas las figuras.
         
@@ -224,25 +225,6 @@ text = open('C:/Users/eagui/OneDrive/Escritorio/LOG_CALLISTO_A.txt','a')
 text.write('Ejecución finalizada. \n\n')
 text.close()
 
-"""
------------------- LISTA DE MODIFICACIONES -------------------------------------------------------------------
-
-          (ESCRIBE EN LAS SIGUIENTES LINEAS, NO USAR ACENTOS)
-------------------------------------------------------------------------------------------------------------------
-
-   Nombre             Fecha (aaaa/mm/dd)            Especifica el cambio
-------------------------------------------------------------------------------------------------------------------
-
-Oscar Godines             2022/02/11            - Se comento el comando 'plt.show()' para ahorrar recursos del
-                                                  sistema, no es necesario observar las imagenes generadas.
-------------------------------------------------------------------------------------------------------------------
-
-Oscar Godines             2022/03/02            - Se retiró el #caso 1 del ciclo for principal, para imprimir
-                                                  el aviso "no hay nuevos archivos".
-
-
-
-"""
 
 
 
