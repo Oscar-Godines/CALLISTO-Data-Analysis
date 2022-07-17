@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 #from tkinter.filedialog import askopenfilename
 import datetime as dt
 from datetime import datetime
-import pylab
+#import pylab
 import time
 import numpy as np
 import os
