@@ -12,9 +12,9 @@
 
 
 import filecmp
-from filecmp import dircmp
-from importlib.resources import path
-from pkgutil import extend_path
+#from filecmp import dircmp
+#from importlib.resources import path
+#from pkgutil import extend_path
 import astropy.io.fits as pyfits
 import matplotlib.pyplot as plt
 #from tkinter import Tk
